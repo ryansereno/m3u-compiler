@@ -1,22 +1,21 @@
 import os
 
-music_path = input()
-full_path = os.path.join(os.path.expanduser("~"), music_path)
+# Set the directory containing the MP3 files
+print("input directory: ")
+directory = input()
 
-ext = [".mp3"]
+# Create an empty list to store the filenames
+filenames = []
 
-files = os.scandir(full_path)
-playlist = []
+# Loop through all the files in the directory
+for filename in os.listdir(directory):
+    if filename.endswith(".mp3"):
+        # Add the filename to the list
+        filenames.append(filename)
 
-for entry in files:
-    if entry.is_file():
-        if os.path.splitext(entry.name)[1].lower() in ext:
-            playlist.append(entry.name + " \n")
-
-
-file = open(os.path.join(full_path, "{}.m3u".format(
-    os.path.basename(full_path)
-)), "w")
-
-file.writelines(playlist)
-file.close()
+# Create a new .m3u playlist file with the name of the directory
+playlist_name = os.path.basename(directory) + ".m3u"
+with open(os.path.join(directory, playlist_name), "w") as f:
+    # Write each filename to the playlist file
+    for filename in filenames:
+        f.write(filename + "\n")
